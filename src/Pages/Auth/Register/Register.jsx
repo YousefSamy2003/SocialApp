@@ -1,8 +1,12 @@
 import { Button, Input, Radio, RadioGroup } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { registerSchema } from "../../Schame/Register/Register";
 
 export default function Register() {
+  ///  vaildation
+
   function onSubmitForm(data) {
     console.log(data);
   }
@@ -11,6 +15,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -19,6 +24,7 @@ export default function Register() {
       dateOfBirth: "",
       gender: "",
     },
+    mode: "onBlur",
   });
   console.log(errors);
 
@@ -33,20 +39,7 @@ export default function Register() {
           onSubmit={handleSubmit(onSubmitForm)}
         >
           <Input
-            {...register("name", {
-              required: {
-                value: true,
-                message: "Name is required",
-              },
-              minLength: {
-                value: 3,
-                message: "mi lenght is 3",
-              },
-              maxLength: {
-                value: 10,
-                message: "max lenght is 10",
-              },
-            })}
+            {...register("name")}
             type="text"
             label="User Name "
             variant="bordered"
@@ -55,12 +48,7 @@ export default function Register() {
             <p className="text-red-500">{errors.name?.message}</p>
           ) : null}
           <Input
-            {...register("email", {
-              required: {
-                value: true,
-                message: "Email is required",
-              },
-            })}
+            {...register("email")}
             ype="email"
             label="Email "
             variant="bordered"
@@ -75,18 +63,27 @@ export default function Register() {
             label="Password "
             variant="bordered"
           />
+          {errors.password && (
+            <p className="text-red-500"> {errors.password?.message}</p>
+          )}
           <Input
             {...register("rePassword")}
             type="password"
             label="Confirm Password "
             variant="bordered"
           />
+          {errors.rePassword && (
+            <p className="text-red-500"> {errors.rePassword?.message}</p>
+          )}
           <Input
             {...register("dateOfBirth")}
             type="date"
             label="Date of Birth"
             variant="bordered"
           />
+          {errors.dateOfBirth && (
+            <p className="text-red-500"> {errors.dateOfBirth?.message}</p>
+          )}
           <RadioGroup {...register("gender")} label="Select gender">
             <Radio value="male">Male</Radio>
             <Radio value="female">Female</Radio>
