@@ -1,19 +1,45 @@
 import { Button, Input, Radio, RadioGroup } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { registerSchema } from "../../Schame/Register/Register";
-
+import { sendSignUpRequest } from "../../../Services/Register.service";
+import { Alert } from "@heroui/alert";
+import { set } from "zod";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 export default function Register() {
-  ///  vaildation
+  const navigate = useNavigate();
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  function onSubmitForm(data) {
-    console.log(data);
+  async function onSubmitForm(data) {
+    setIsError(false);
+
+    setIsSuccess(false);
+    try {
+      let response = await sendSignUpRequest(data);
+      console.log(response);
+      setIsSuccess(true);
+      setIsError(false);
+      toast.success("Account created successfully");
+     setTimeout(() => {
+      navigate("/auth/signin");
+     },3000)
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+      setIsSuccess(false);
+
+      toast.error("Something went wrong");
+    }
   }
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    control,
+    formState: { errors ,isSubmitting},
   } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -26,7 +52,6 @@ export default function Register() {
     },
     mode: "onBlur",
   });
-  console.log(errors);
 
   return (
     <section className="h-screen flex justify-center items-center ">
@@ -38,6 +63,12 @@ export default function Register() {
           className="  flex flex-col gap-4"
           onSubmit={handleSubmit(onSubmitForm)}
         >
+          {isError ? (
+            <Alert color="danger" title={`Something went wrong`} />
+          ) : null}
+          {isSuccess ? (
+            <Alert color="success" title={`Account created successfully`} />
+          ) : null}
           <Input
             {...register("name")}
             type="text"
@@ -84,11 +115,20 @@ export default function Register() {
           {errors.dateOfBirth && (
             <p className="text-red-500"> {errors.dateOfBirth?.message}</p>
           )}
-          <RadioGroup {...register("gender")} label="Select gender">
-            <Radio value="male">Male</Radio>
-            <Radio value="female">Female</Radio>
-          </RadioGroup>
-          <Button color="secondary" type="submit">
+          <Controller
+            control={control}
+            name="gender"
+            render={({ field }) => (
+              <RadioGroup {...field} label="Select gender">
+                <Radio value="male">Male</Radio>
+                <Radio value="female">Female</Radio>
+              </RadioGroup>
+            )}
+          />
+          {errors.gender && (
+            <p className="text-red-500"> {errors.gender?.message}</p>
+          )}
+          <Button isLoading={isSubmitting} color="secondary" type="submit">
             {" "}
             Sign UP
           </Button>

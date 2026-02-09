@@ -14,7 +14,7 @@ export const registerSchema = z
     password: z
       .string()
       .nonempty("password is required")
-      .regex(/^[A-Z][a-z]{8,}/, "enter vaild password"),
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, "enter vaild password"),
     rePassword: z.string().nonempty("confirm password is required"),
     dateOfBirth: z
       .string()
