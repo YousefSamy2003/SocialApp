@@ -7,11 +7,17 @@ import Profile from "../Pages/Profile/Profile";
 import Authlayout from "../Layouts/Authlayout";
 import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
+import MainGuard from "../Guard/MainGuard";
 
 export const router = createBrowserRouter([
   {
     path: "",
-    element: <Mainlayout />,
+    element: (
+      <MainGuard>
+        {" "}
+        <Mainlayout />
+      </MainGuard>
+    ),
     children: [
       {
         index: true,
