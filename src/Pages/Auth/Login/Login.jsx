@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Input, Radio, RadioGroup } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
- 
+
 import { Alert } from "@heroui/alert";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { sendLoginRequest } from "../../../Services/Login.service";
 import { loginSchema } from "../../Schame/Register/Login";
+import { tokenContext } from "../../../Context/TokenContextProvider";
 export default function Login() {
+  const { setUserToken, userToken } = useContext(tokenContext);
+  console.log(userToken);
+  console.log(setUserToken);
+
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -19,12 +24,14 @@ export default function Login() {
     try {
       let response = await sendLoginRequest(data);
       console.log(response);
+      setUserToken(response.token);
+      localStorage.setItem("userToken", response.token);
       setIsSuccess(true);
       setIsError(false);
       toast.success("Login successful");
       setTimeout(() => {
         navigate("/");
-      }, 3000);
+      }, 1000);
     } catch (error) {
       console.log(error);
       setIsError(true);
@@ -48,7 +55,7 @@ export default function Login() {
   return (
     <>
       <section className="h-screen flex justify-center items-center">
-        <div className="w-full md:w-1/2 ">
+        <div className="w-full md:w-1/2  p-3.75  rounded-xl  bg-white shadow-2xl ">
           <h1 className="text-4xl text-secondary text-center font-bold mb-5">
             Login
           </h1>

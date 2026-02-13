@@ -18,14 +18,16 @@ export default function Register() {
 
     setIsSuccess(false);
     try {
+      console.log(data);
+
       let response = await sendSignUpRequest(data);
       console.log(response);
       setIsSuccess(true);
       setIsError(false);
       toast.success("Account created successfully");
-     setTimeout(() => {
-      navigate("/auth/signin");
-     },3000)
+      setTimeout(() => {
+        navigate("/auth/signin");
+      }, 3000);
     } catch (error) {
       console.log(error);
       setIsError(true);
@@ -39,7 +41,7 @@ export default function Register() {
     register,
     handleSubmit,
     control,
-    formState: { errors ,isSubmitting},
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
