@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { Alert } from "@heroui/alert";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { sendLoginRequest } from "../../../Services/Login.service";
 import { loginSchema } from "../../Schame/Register/Login";
 import { tokenContext } from "../../../Context/TokenContextProvider";
@@ -91,6 +91,9 @@ export default function Login() {
             <Button isLoading={isSubmitting} color="secondary" type="submit">
               Sign In
             </Button>
+            <Link to="/auth/signup" className="text-center text-secondary">
+              Don't have an account? Sign Up
+            </Link>
           </form>
         </div>
       </section>

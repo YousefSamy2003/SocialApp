@@ -7,7 +7,7 @@ import { sendSignUpRequest } from "../../../Services/Register.service";
 import { Alert } from "@heroui/alert";
 import { set } from "zod";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
   const navigate = useNavigate();
   const [isError, setIsError] = useState(false);
@@ -134,6 +134,9 @@ export default function Register() {
             {" "}
             Sign UP
           </Button>
+            <Link to="/auth/signin" className="text-center text-secondary">
+              Already have an account? Sign In
+            </Link>
         </form>
       </div>
     </section>

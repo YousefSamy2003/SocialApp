@@ -8,6 +8,7 @@ import Authlayout from "../Layouts/Authlayout";
 import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
 import MainGuard from "../Guard/MainGuard";
+import PostDetails from "../Components/SinglePost/PostDetails";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path:"/postdetails/:id",
+        element:<PostDetails />
       },
       {
         path: "*",
