@@ -25,7 +25,9 @@ export default function NavbarComponent() {
   return (
     <Navbar>
       <NavbarBrand>
-        <p className="font-bold  text-secondary text-3xl">Social App</p>
+        <p className="font-bold  text-secondary text-3xl"><Link to={"/"} className="text-secondary">
+        Social App
+        </Link></p>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
