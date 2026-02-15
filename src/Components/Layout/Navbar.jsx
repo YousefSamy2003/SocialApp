@@ -16,10 +16,13 @@ import { tokenContext } from "../../Context/TokenContextProvider";
 
 export default function NavbarComponent() {
   const { userToken, setUserToken } = useContext(tokenContext);
+  let { userData ,setUserData } = useContext(tokenContext);
   let navigate=useNavigate();
   function handleLogout() { 
     setUserToken(null);
+    setUserData(null);
     localStorage.removeItem("userToken");
+
     navigate("/auth/signin");
   }
   return (
@@ -50,15 +53,15 @@ export default function NavbarComponent() {
               as="button"
               className="transition-transform"
               color="secondary"
-              name="Jason Hughes"
+              name={userData ? userData.name : "User"}
               size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              src={userData ? userData.photo : "https://i.pravatar.cc/150?u=a042581f4e29026704d"}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">zoey@example.com</p>
+              <p className="font-semibold">Signed in as { userData?.name }</p>
+              <p className="font-semibold">{userData?.email}</p>
             </DropdownItem>
             <DropdownItem key="settings">My Settings</DropdownItem>
             <DropdownItem key="profile">
